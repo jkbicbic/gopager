@@ -1,3 +1,3 @@
-module github.com/jkbicbic/go-paginator
+module github.com/jkbicbic/gopager
 
 go 1.12
