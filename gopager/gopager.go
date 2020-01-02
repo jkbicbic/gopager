@@ -1,4 +1,4 @@
-package paginator
+package gopager
 
 // Pagination models the paginator
 type Pagination struct {
