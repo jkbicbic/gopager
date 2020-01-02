@@ -8,7 +8,7 @@ a small library that calculates the first, last, prev, next, and slice of pages 
 
 Below is how your pagination could look.
 
-![alt text] (https://github.com/jkbicbic/gopager/blob/master/img/sample.png)
+![alt text](https://github.com/jkbicbic/gopager/blob/master/img/sample.png)
 
 ### Installation
 
