@@ -1,5 +1,7 @@
 # Gopager
 
+[![GoDoc](https://godoc.org/github.com/jkbicbic/gopager?status.svg)](https://godoc.org/github.com/jkbicbic/gopager)
+
 a small library that handles pagination
 
 ### Installation
