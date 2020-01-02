@@ -30,7 +30,7 @@ Build your pagination using `gopager.New()`
 
 ```GO
 p := gopager.New(totalRows, currentPage, paginatorLimit)  // creates a new instance of pagination
-p.Paginate() // builds the pagination
+p.Paginate()                                              // builds the pagination
 ```
 
 You can pass this in a `map[string]interface{}{}` to be used in your template
@@ -39,6 +39,50 @@ You can pass this in a `map[string]interface{}{}` to be used in your template
 data := map[string]interface{}{}
 data["paginator"] = p
 ```
+
+sample template usage
+
+```HTML
+  {{if .paginator.HasPrev}}
+  <li class="first">
+    <a href="?page={{.paginator.FirstPage}}"> First </a>
+  </li>
+  <li class="prev">
+    <a rel="prev" href="?page={{.paginator.prev}}">{{.paginator.Prev}}</a>
+  </li>
+  {{end}}
+  {{if .paginator.HasPrev}}
+  <li class="page">
+    <a href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
+  </li>
+  {{end}}
+  {{range $i := p.Pages}}
+  {{if eq $i $currentPage}}
+  <li class="page current">
+    {{$i}}
+  </li>
+  {{else}}
+  <li class="page">
+    <a href="?page={{$i}}">{{$i}}</a>
+  </li>
+  {{end}}
+  {{end}}
+  {{if not .paginator.NearLast}}
+  <li class="page">
+    <a href="?page={{.paginator.LastPage}}">{{.paginator.LastPage}}</a>
+  </li>
+  {{end}}
+  {{if .paginator.HasNext}}
+  <li class="next">
+    <a rel="next" href="?page={{.paginator.Next}}"> Next </a>
+  </li>
+  <li class="last">
+    <a href="?&page={{.paginator.LastPage}}"> Last </a>
+  </li>
+  {{end}}
+```
+
+
 
 Gopager struct for reference
 
@@ -55,7 +99,6 @@ type Pagination struct {
 	totalRows, currentPage, pageLimit int
 }
 ```
-
 ### Contributing
 
 create issues [here](https://github.com/jkbicbic/gopager/issues/new)
