@@ -2,7 +2,13 @@
 
 [![GoDoc](https://godoc.org/github.com/jkbicbic/gopager?status.svg)](https://godoc.org/github.com/jkbicbic/gopager) [![Go Report Card](https://goreportcard.com/badge/github.com/jkbicbic/gopager)](https://goreportcard.com/report/github.com/jkbicbic/gopager)
 
-a small library that handles pagination
+a small library that calculates the first, last, prev, next, and slice of pages for your pagination.
+
+### Example Pagination
+
+Below is how your pagination could look.
+
+![alt text] (https://github.com/jkbicbic/gopager/blob/master/img/sample.png)
 
 ### Installation
 
