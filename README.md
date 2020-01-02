@@ -58,7 +58,7 @@ type Pagination struct {
 
 ### Contributing
 
-create issues [here]: https://github.com/jkbicbic/gopager/issues/new
+create issues [here](https://github.com/jkbicbic/gopager/issues/new)
 
 
 
