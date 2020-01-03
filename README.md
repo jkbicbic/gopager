@@ -2,6 +2,7 @@
 
 [![GoDoc](https://godoc.org/github.com/jkbicbic/gopager?status.svg)](https://godoc.org/github.com/jkbicbic/gopager) [![Go Report Card](https://goreportcard.com/badge/github.com/jkbicbic/gopager)](https://goreportcard.com/report/github.com/jkbicbic/gopager)
 [![Maintainability](https://api.codeclimate.com/v1/badges/785ba623d085509dee21/maintainability)](https://codeclimate.com/github/jkbicbic/gopager/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/785ba623d085509dee21/test_coverage)](https://codeclimate.com/github/jkbicbic/gopager/test_coverage)
 
 a small library that calculates the first, last, prev, next, and slice of pages for your pagination.
 
