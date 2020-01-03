@@ -4,7 +4,7 @@
 
 a small library that handles pagination
 
-### Installation
+## Installation
 
 Adding the package from github
 
@@ -18,21 +18,22 @@ Importing the package in your project
 import "github.com/jkbicbic/gopager"
 ```
 
-### Usage
+## Usage
 
-Gopager accepts 3 arguments
+Gopager accepts 3 uint arguments
 
 ```GO
-totalRows := 40     // total rows of your query
-currentPage := 5    // the current page
-paginatorLimit := 3 // the size of your paginator e.g. [4 5 6] for size 3 [4 5 6 7 8] for size 5
+var totalPages uint = 40 // total pages is total rows divided by page limit
+var currentPage uint = 5 // the current page
+var pagerLength uint = 3 // the length of your paginator e.g. [4 5 6] for size 3 [4 5 6 7 8] for size 5
+
 ```
 
 Build your pagination using `gopager.New()`
 
 ```GO
-p := gopager.New(totalRows, currentPage, paginatorLimit)  // creates a new instance of pagination
-p.Paginate()                                              // builds the pagination
+p := gopager.New(totalPages, currentPage, paginatorLength)  // creates a new instance of pagination
+p.Paginate()                                                // builds the pagination
 ```
 
 You can pass this in a `map[string]interface{}{}` to be used in your template
@@ -45,43 +46,43 @@ data["paginator"] = p
 sample template usage
 
 ```HTML
-  {{if .paginator.HasPrev}}
-  <li class="first">
-    <a href="?page={{.paginator.FirstPage}}"> First </a>
-  </li>
-  <li class="prev">
-    <a rel="prev" href="?page={{.paginator.prev}}">{{.paginator.Prev}}</a>
-  </li>
-  {{end}}
-  {{if .paginator.HasPrev}}
-  <li class="page">
-    <a href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
-  </li>
-  {{end}}
-  {{range $i := p.Pages}}
-  {{if eq $i $currentPage}}
-  <li class="page current">
-    {{$i}}
-  </li>
-  {{else}}
-  <li class="page">
-    <a href="?page={{$i}}">{{$i}}</a>
-  </li>
-  {{end}}
-  {{end}}
-  {{if not .paginator.NearLast}}
-  <li class="page">
-    <a href="?page={{.paginator.LastPage}}">{{.paginator.LastPage}}</a>
-  </li>
-  {{end}}
-  {{if .paginator.HasNext}}
-  <li class="next">
-    <a rel="next" href="?page={{.paginator.Next}}"> Next </a>
-  </li>
-  <li class="last">
-    <a href="?&page={{.paginator.LastPage}}"> Last </a>
-  </li>
-  {{end}}
+{{if .paginator.HasPrev}}
+<li class="first">
+  <a href="?page={{.paginator.FirstPage}}"> First </a>
+</li>
+<li class="prev">
+  <a rel="prev" href="?page={{.paginator.prev}}">{{.paginator.Prev}}</a>
+</li>
+{{end}}
+{{if .paginator.HasPrev}}
+<li class="page">
+  <a href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
+</li>
+{{end}}
+{{range $i := p.Pages}}
+{{if eq $i $currentPage}}
+<li class="page current">
+  {{$i}}
+</li>
+{{else}}
+<li class="page">
+  <a href="?page={{$i}}">{{$i}}</a>
+</li>
+{{end}}
+{{end}}
+{{if not .paginator.NearLast}}
+<li class="page">
+  <a href="?page={{.paginator.LastPage}}">{{.paginator.LastPage}}</a>
+</li>
+{{end}}
+{{if .paginator.HasNext}}
+<li class="next">
+  <a rel="next" href="?page={{.paginator.Next}}"> Next </a>
+</li>
+<li class="last">
+  <a href="?&page={{.paginator.LastPage}}"> Last </a>
+</li>
+{{end}}
 ```
 
 
@@ -101,7 +102,7 @@ type Pagination struct {
 	totalRows, currentPage, pageLimit int
 }
 ```
-### Contributing
+## Contribute
 
 create issues [here](https://github.com/jkbicbic/gopager/issues/new)
 
