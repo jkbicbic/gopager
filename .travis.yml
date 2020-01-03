@@ -1,0 +1,42 @@
+# use the latest ubuntu environment (18.04) available on travis
+dist: xenial
+
+language: go
+sudo: false
+
+go:
+  - 1.11.x
+  - 1.12.5
+
+git:
+  depth: 1
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID="be1e916fb55c9e429bfebf4545996dedea2c27337e3d1b272d3db15fa2ee4da8"
+    - CODECOV_TOKEN="79cabecf-38dc-4494-b0ae-47f41789422f"
+
+before_install:
+  - export PATH=$GOPATH/bin:./_output/tools/etcd/bin:$PATH
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin
+
+install:
+  - export PATH=$GOPATH/bin:./_output/tools/etcd/bin:$PATH
+  - export GO111MODULE=on
+  - go mod tidy
+  - golangci-lint run
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - CGO_ENABLED=0
+  - go test -v -race ./... -coverprofile=c.out -covermode=atomic
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
