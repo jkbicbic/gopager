@@ -8,7 +8,7 @@ a small library for your golang project pagination needs.
 
 ### Example Pagination
 
-Below is how your pagination could look.
+Below is how your pagination could look. Please note that any styles that you see here are not included, you and you alone have the power to design your own pagination this library just provides the calculations.
 
 ![alt text](https://github.com/jkbicbic/gopager/blob/master/img/sample.png)
 
