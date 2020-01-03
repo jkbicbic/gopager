@@ -45,7 +45,7 @@ func TestGoPager(t *testing.T) {
 			if p.Prev < 1 {
 				t.Errorf("Previous page is %d, should not be less than 1", p.Prev)
 			}
-			if p.PagerStart < 0 {
+			if p.PagerStart < 1 {
 				t.Errorf("start of pager is %d, should not be less than 1", p.PagerStart)
 			}
 			if p.Next != (p.CurrentPage+1) && p.CurrentPage != tt.totalPages {
