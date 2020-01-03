@@ -1,4 +1,4 @@
-package main
+package gopager_test
 
 import (
 	"fmt"
@@ -13,6 +13,7 @@ func TestGoPager(t *testing.T) {
 	}{
 		{20, 3, 10},
 		{40, 200, 20},
+		{40, 1, 20},
 	}
 
 	for _, tt := range tests {
@@ -42,7 +43,10 @@ func TestGoPager(t *testing.T) {
 				t.Errorf("Previous page got %d, want %d", p.Prev, (p.CurrentPage - 1))
 			}
 			if p.Prev < 1 {
-				t.Errorf("Previous page should not be less than 1")
+				t.Errorf("Previous page is %d, should not be less than 1", p.Prev)
+			}
+			if p.PagerStart < 0 {
+				t.Errorf("start of pager is %d, should not be less than 1", p.PagerStart)
 			}
 			if p.Next != (p.CurrentPage+1) && p.CurrentPage != tt.totalPages {
 				t.Errorf("Next page got %d, want %d", p.Next, (p.CurrentPage + 1))
