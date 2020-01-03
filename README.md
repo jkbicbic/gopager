@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/785ba623d085509dee21/maintainability)](https://codeclimate.com/github/jkbicbic/gopager/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/785ba623d085509dee21/test_coverage)](https://codeclimate.com/github/jkbicbic/gopager/test_coverage)
 
-a small library that calculates the first, last, prev, next, and slice of pages for your pagination.
+a small library for your golang project pagination needs.
 
 ### Example Pagination
 
