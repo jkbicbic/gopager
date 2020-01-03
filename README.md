@@ -38,7 +38,7 @@ var pagerLength uint = 3 // the length of your paginator e.g. [4 5 6] for size 3
 Build your pagination using `gopager.New()`
 
 ```GO
-p := gopager.New(totalPages, currentPage, paginatorLength)  // creates a new instance of pagination
+p := gopager.New(totalPages, currentPage, pagerLength)  // creates a new instance of pagination
 p.Paginate()                                                // builds the pagination
 ```
 
@@ -96,16 +96,17 @@ sample template usage
 Gopager struct for reference
 
 ```GO
-type Pagination struct {
-	HasPrev                           bool
-	HasNext                           bool
-	NearLast                          bool
-	FirstPage                         int
-	LastPage                          int
-	Prev                              int
-	Next                              int
-	Pages                             []int
-	totalRows, currentPage, pageLimit int
+ttype Pagination struct {
+	HasPrev                 bool
+	HasNext                 bool
+	NearLast                bool
+	FirstPage               uint
+	LastPage                uint
+	Prev                    uint
+	Next                    uint
+	Pages                   []uint
+	CurrentPage             uint
+	totalPages, pagerLength uint
 }
 ```
 ## Contribute
