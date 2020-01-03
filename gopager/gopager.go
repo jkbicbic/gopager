@@ -2,70 +2,80 @@ package gopager
 
 // Pagination models the paginator
 type Pagination struct {
-	HasPrev                           bool
-	HasNext                           bool
-	NearLast                          bool
-	FirstPage                         int
-	LastPage                          int
-	Prev                              int
-	Next                              int
-	Pages                             []int
-	totalRows, currentPage, pageLimit int
+	HasPrev                 bool
+	HasNext                 bool
+	NearLast                bool
+	FirstPage               uint
+	LastPage                uint
+	Prev                    uint
+	Next                    uint
+	Pages                   []uint
+	CurrentPage             uint
+	totalPages, pagerLength uint
 }
 
 // New builds a new pagination
-func New(totalRows, currentPage, pageLimit int) *Pagination {
+func New(totalRows, currentPage, pagerLength uint) *Pagination {
 	return &Pagination{
-		totalRows:   totalRows,
-		currentPage: currentPage,
-		pageLimit:   pageLimit,
+		totalPages:  totalRows,
+		CurrentPage: currentPage,
+		pagerLength: pagerLength,
 	}
 }
 
 // Paginate accepts the totalRows, currentPage, and paginatorLimit to create a paginator for a page
 func (p *Pagination) Paginate() {
 	// new AtPagination struct
-	var pageCalc int
-	totalPages := p.totalRows / p.pageLimit
+	var pageCalc uint
 
 	p.FirstPage = 1
-	p.LastPage = totalPages
+	p.LastPage = p.totalPages
+
+	// check if current page overflows totalpage
+	if p.CurrentPage > p.totalPages {
+		p.CurrentPage = p.totalPages
+	}
+
+	// check if current page underflows totalpage
+	if p.CurrentPage < 1 {
+		p.CurrentPage = 1
+	}
 
 	// check if has prev
-	if p.currentPage > p.pageLimit-1 {
+	if p.CurrentPage > 1 {
 		p.HasPrev = true
 	}
 
 	// check if has next
-	if p.currentPage < totalPages {
+	if p.CurrentPage < p.totalPages {
 		p.HasNext = true
 	}
 
 	// for next page add 1
 	// to currentPage
-	p.Next = p.currentPage + 1
-	if p.Next > totalPages {
-		p.Next = totalPages
+	p.Next = p.CurrentPage + 1
+	if p.Next > p.totalPages {
+		p.Next = p.totalPages
 	}
 
 	// for previous page subtract 1
 	// to currentPage
-	p.Prev = p.currentPage - 1
+	p.Prev = p.CurrentPage - 1
 	if p.Prev <= 0 {
 		p.Prev = 1
 	}
 
 	// check currentPage and generate pages
 	// with different calculations
-	if p.currentPage == 1 {
-		pageCalc = p.currentPage
+	if p.CurrentPage == 1 {
+		pageCalc = p.CurrentPage
 	} else {
-		pageCalc = p.currentPage - (p.pageLimit / 2)
+		pageCalc = p.CurrentPage - (p.pagerLength / 2)
 	}
 
 	// check to make sure
 	// it will not overflow
-	lastGroup := (totalPages - (p.pageLimit - 1))
+	lastGroup := (p.totalPages - (p.pagerLength - 1))
 	if pageCalc >= lastGroup && pageCalc != 1 {
 		pageCalc = lastGroup
 	}
@@ -78,13 +88,13 @@ func (p *Pagination) Paginate() {
 	}
 
 	// build pages
-	for i := pageCalc; i <= (pageCalc + (p.pageLimit - 1)); i++ {
+	for i := pageCalc; i <= (pageCalc + (p.pagerLength - 1)); i++ {
 		p.Pages = append(p.Pages, i)
 	}
 
 	// check if lastpage is
 	// in pages
-	if p.Pages[p.pageLimit-1] == totalPages {
+	if p.Pages[p.pagerLength-1] == p.totalPages {
 		p.NearLast = true
 	}
 }
