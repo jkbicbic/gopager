@@ -12,6 +12,7 @@ func TestGoPager(t *testing.T) {
 		totalPages, currentPage, pagerLength uint
 	}{
 		{20, 3, 10},
+		{1, 3, 10},
 		{40, 200, 20},
 		{40, 1, 20},
 	}
