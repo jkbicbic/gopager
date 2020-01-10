@@ -5,18 +5,16 @@ type Pagination struct {
 	HasPrev                 bool
 	HasNext                 bool
 	NearLast                bool
-	FirstPage               uint
-	LastPage                uint
-	Prev                    uint
-	Next                    uint
-	Pages                   []uint
-	CurrentPage             uint
-	PagerStart              uint
-	totalPages, pagerLength uint
+	Prev                    int
+	Next                    int
+	Pages                   []int
+	CurrentPage             int
+	PagerStart              int
+	totalPages, pagerLength int
 }
 
 // New builds a new pagination
-func New(totalPages, currentPage, pagerLength uint) *Pagination {
+func New(totalPages, currentPage, pagerLength int) *Pagination {
 	return &Pagination{
 		totalPages:  totalPages,
 		CurrentPage: currentPage,
@@ -24,24 +22,17 @@ func New(totalPages, currentPage, pagerLength uint) *Pagination {
 	}
 }
 
-// Paginate accepts the totalRows, currentPage, and paginatorLimit to create a paginator for a page
+// Paginate ...
 func (p *Pagination) Paginate() {
-	// new AtPagination struct
-
-	p.FirstPage = 1
-	p.LastPage = p.totalPages
-
-	// check if current page overflows totalpage
-	if p.CurrentPage > p.totalPages {
-		p.CurrentPage = p.totalPages
-	}
 
 	// check if has prev
-	if p.CurrentPage > 1 {
+	p.HasPrev = false
+	if p.CurrentPage > p.pagerLength-1 {
 		p.HasPrev = true
 	}
 
 	// check if has next
+	p.HasNext = false
 	if p.CurrentPage < p.totalPages {
 		p.HasNext = true
 	}
@@ -49,49 +40,42 @@ func (p *Pagination) Paginate() {
 	// for next page add 1
 	// to currentPage
 	p.Next = p.CurrentPage + 1
-	if !p.HasNext {
+	if p.Next > p.totalPages {
 		p.Next = p.totalPages
 	}
 
 	// for previous page subtract 1
 	// to currentPage
 	p.Prev = p.CurrentPage - 1
-	if !p.HasPrev {
+	if p.Prev <= 0 {
 		p.Prev = 1
 	}
 
 	// check currentPage and generate pages
 	// with different calculations
-	p.PagerStart = 1
-	if p.CurrentPage != 1 {
-		p.PagerStart = p.CurrentPage - (p.pagerLength / 2)
-	}
-
-	// check to make sure
-	// it will not overflow
-	lastGroup := (p.totalPages - (p.pagerLength - 1))
-	if p.PagerStart >= lastGroup && p.PagerStart != 1 {
-		p.PagerStart = lastGroup
+	mod := p.CurrentPage % p.pagerLength
+	if mod == 0 || p.CurrentPage == 1 {
+		p.PagerStart = p.CurrentPage
+	} else if mod == 1 {
+		p.PagerStart = p.CurrentPage - mod
+	} else {
+		p.PagerStart = p.CurrentPage - (mod - 1)
 	}
 
 	// build pages
-	if p.totalPages > (p.pagerLength) {
-		for i := p.PagerStart; i <= (p.PagerStart + (p.pagerLength - 1)); i++ {
-			p.Pages = append(p.Pages, i)
-		}
-	} else {
-		for i := p.PagerStart; i <= p.totalPages; i++ {
-			p.Pages = append(p.Pages, i)
+	for i := 1; i <= p.pagerLength; i++ {
+		if p.PagerStart <= p.totalPages {
+			p.Pages = append(p.Pages, p.PagerStart)
+			p.PagerStart = p.PagerStart + 1
 		}
 	}
 
+	p.NearLast = false
 	// check if lastpage is
 	// in pages
-	p.NearLast = false
-	if p.totalPages > p.pagerLength {
-		if p.Pages[p.pagerLength-1] == p.totalPages {
+	for i := 0; i < len(p.Pages); i++ {
+		if p.Pages[i] == p.totalPages {
 			p.NearLast = true
 		}
 	}
-
 }
