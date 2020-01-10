@@ -75,13 +75,23 @@ func (p *Pagination) Paginate() {
 	}
 
 	// build pages
-	for i := p.PagerStart; i <= (p.PagerStart + (p.pagerLength - 1)); i++ {
-		p.Pages = append(p.Pages, i)
+	if p.totalPages > (p.pagerLength) {
+		for i := p.PagerStart; i <= (p.PagerStart + (p.pagerLength - 1)); i++ {
+			p.Pages = append(p.Pages, i)
+		}
+	} else {
+		for i := p.PagerStart; i <= p.totalPages; i++ {
+			p.Pages = append(p.Pages, i)
+		}
 	}
 
 	// check if lastpage is
 	// in pages
-	if p.Pages[p.pagerLength-1] == p.totalPages {
-		p.NearLast = true
+	p.NearLast = false
+	if p.totalPages > p.pagerLength {
+		if p.Pages[p.pagerLength-1] == p.totalPages {
+			p.NearLast = true
+		}
 	}
+
 }
