@@ -1,5 +1,7 @@
 package gopager
 
+import "math"
+
 // Pagination models the paginator
 type Pagination struct {
 	HasPrev                 bool
@@ -10,13 +12,13 @@ type Pagination struct {
 	Pages                   []int
 	CurrentPage             int
 	PagerStart              int
-	totalPages, pagerLength int
+	TotalPages, pagerLength int
 }
 
 // New builds a new pagination
-func New(totalPages, currentPage, pagerLength int) *Pagination {
+func New(count, pageLimit, currentPage, pagerLength int) *Pagination {
 	return &Pagination{
-		totalPages:  totalPages,
+		TotalPages:  int(math.Ceil(float64(count) / float64(pageLimit))),
 		CurrentPage: currentPage,
 		pagerLength: pagerLength,
 	}
@@ -33,15 +35,15 @@ func (p *Pagination) Paginate() {
 
 	// check if has next
 	p.HasNext = false
-	if p.CurrentPage < p.totalPages {
+	if p.CurrentPage < p.TotalPages {
 		p.HasNext = true
 	}
 
 	// for next page add 1
 	// to currentPage
 	p.Next = p.CurrentPage + 1
-	if p.Next > p.totalPages {
-		p.Next = p.totalPages
+	if p.Next > p.TotalPages {
+		p.Next = p.TotalPages
 	}
 
 	// for previous page subtract 1
@@ -54,17 +56,15 @@ func (p *Pagination) Paginate() {
 	// check currentPage and generate pages
 	// with different calculations
 	mod := p.CurrentPage % p.pagerLength
-	if mod == 0 || p.CurrentPage == 1 {
-		p.PagerStart = p.CurrentPage
-	} else if mod == 1 {
-		p.PagerStart = p.CurrentPage - mod
+	if mod == 0 && p.CurrentPage == 1 || mod == p.CurrentPage {
+		p.PagerStart = 1
 	} else {
-		p.PagerStart = p.CurrentPage - (mod - 1)
+		p.PagerStart = p.CurrentPage - (p.pagerLength / 2)
 	}
 
 	// build pages
 	for i := 1; i <= p.pagerLength; i++ {
-		if p.PagerStart <= p.totalPages {
+		if p.PagerStart <= p.TotalPages {
 			p.Pages = append(p.Pages, p.PagerStart)
 			p.PagerStart = p.PagerStart + 1
 		}
@@ -74,7 +74,7 @@ func (p *Pagination) Paginate() {
 	// check if lastpage is
 	// in pages
 	for i := 0; i < len(p.Pages); i++ {
-		if p.Pages[i] == p.totalPages {
+		if p.Pages[i] == p.TotalPages {
 			p.NearLast = true
 		}
 	}
