@@ -52,7 +52,7 @@ data := map[string]interface{}{}
 data["paginator"] = p
 ```
 
-sample template usage
+sample template usage using bulma pagination
 
 ```HTML
 <nav class="pagination" role="navigation" aria-label="pagination">
