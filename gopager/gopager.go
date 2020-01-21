@@ -7,6 +7,7 @@ type Pagination struct {
 	HasPrev                 bool
 	HasNext                 bool
 	NearLast                bool
+	Firstpage               int
 	Prev                    int
 	Next                    int
 	Pages                   []int
@@ -26,6 +27,8 @@ func New(count, pageLimit, currentPage, pagerLength int) *Pagination {
 
 // Paginate ...
 func (p *Pagination) Paginate() {
+
+	p.Firstpage = 1
 
 	// check if has prev
 	p.HasPrev = false

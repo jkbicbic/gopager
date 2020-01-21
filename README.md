@@ -28,20 +28,21 @@ import "github.com/jkbicbic/gopager"
 
 ## Usage
 
-Gopager accepts 3 uint arguments
+Gopager accepts 4 arguments
 
 ```GO
-var totalPages uint = 40 // total pages is total rows divided by page limit
-var currentPage uint = 5 // the current page
-var pagerLength uint = 3 // the length of your paginator e.g. [4 5 6] for size 3 [4 5 6 7 8] for size 5
+var count int = 40 // totalrows of your query
+var pageLimit int = 3 // the number of rows for each page
+var currentPage int = 5 // the current page
+var pagerLength int = 3 // the length of your paginator e.g. [4 5 6] for size 3 [4 5 6 7 8] for size 5
 
 ```
 
 Build your pagination using `gopager.New()`
 
 ```GO
-p := gopager.New(totalPages, currentPage, pagerLength)  // creates a new instance of pagination
-p.Paginate()                                                // builds the pagination
+p := gopager.New(count, pageLimit, currentPage, pagerLength)  // creates a new instance of pagination
+p.Paginate()                                                  // builds the pagination
 ```
 
 You can pass this in a `map[string]interface{}{}` to be used in your template
@@ -54,43 +55,52 @@ data["paginator"] = p
 sample template usage
 
 ```HTML
-{{if .paginator.HasPrev}}
-<li class="first">
-  <a href="?page={{.paginator.FirstPage}}"> First </a>
-</li>
-<li class="prev">
-  <a rel="prev" href="?page={{.paginator.prev}}">{{.paginator.Prev}}</a>
-</li>
-{{end}}
-{{if .paginator.HasPrev}}
-<li class="page">
-  <a href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
-</li>
-{{end}}
-{{range $i := p.Pages}}
-{{if eq $i $currentPage}}
-<li class="page current">
-  {{$i}}
-</li>
-{{else}}
-<li class="page">
-  <a href="?page={{$i}}">{{$i}}</a>
-</li>
-{{end}}
-{{end}}
-{{if not .paginator.NearLast}}
-<li class="page">
-  <a href="?page={{.paginator.LastPage}}">{{.paginator.LastPage}}</a>
-</li>
-{{end}}
-{{if .paginator.HasNext}}
-<li class="next">
-  <a rel="next" href="?page={{.paginator.Next}}"> Next </a>
-</li>
-<li class="last">
-  <a href="?&page={{.paginator.LastPage}}"> Last </a>
-</li>
-{{end}}
+<nav class="pagination" role="navigation" aria-label="pagination">
+  <ul class="pagination-list">
+    {{if .paginator.HasPrev}}
+    <li>
+      <a class="pagination-link" href="?page={{.paginator.FirstPage}}"> First </a>
+    </li>
+    <li>
+      <a class="pagination-link" rel="prev" href="?page={{.paginator.Prev}}"> Prev </a>
+    </li>
+    <li>
+      <a class="pagination-link" href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
+    </li>
+    {{end}}
+    {{$currentPage := .paginator.CurrentPage}}
+    {{range $i := .paginator.Pages}}
+    {{if eq $i $currentPage}}
+    <li>
+      <a class="pagination-link is-current">{{$i}}</a>
+    </li>
+    <li>
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    {{else}}
+    <li>
+      <a class="pagination-link" href="?page={{$i}}">{{$i}}</a>
+    </li>
+    {{end}}
+    {{end}}
+    {{if not .paginator.NearLast}}
+    <li>
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    <li>
+      <a class="pagination-link" href="?page={{.paginator.TotalPages}}">{{.paginator.TotalPages}}</a>
+    </li>
+    {{end}}
+    {{if .paginator.HasNext}}
+    <li>
+      <a class="pagination-link" rel="next" href="?page={{.paginator.Next}}"> Next </a>
+    </li>
+    <li>
+      <a class="pagination-link" href="?&page={{.paginator.TotalPages}}"> Last </a>
+    </li>
+    {{end}}
+  </ul>
+</nav>
 ```
 
 
@@ -98,17 +108,17 @@ sample template usage
 Gopager struct for reference
 
 ```GO
-ttype Pagination struct {
+type Pagination struct {
 	HasPrev                 bool
 	HasNext                 bool
 	NearLast                bool
-	FirstPage               uint
-	LastPage                uint
-	Prev                    uint
-	Next                    uint
-	Pages                   []uint
-	CurrentPage             uint
-	totalPages, pagerLength uint
+	Firstpage               int
+	Prev                    int
+	Next                    int
+	Pages                   []int
+	CurrentPage             int
+	PagerStart              int
+	TotalPages, pagerLength int
 }
 ```
 ## Contribute
