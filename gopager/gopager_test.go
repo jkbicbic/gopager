@@ -28,10 +28,10 @@ func TestGoPager(t *testing.T) {
 			if p.CurrentPage != 1 && p.HasPrev == false {
 				t.Errorf("current page is %d, but HasPrev returned %v", p.CurrentPage, p.HasPrev)
 			}
-			if p.CurrentPage == p.totalPages && p.HasNext == true {
+			if p.CurrentPage == p.TotalPages && p.HasNext == true {
 				t.Errorf("current page is already %d, but HasNext returned %v", p.CurrentPage, p.HasPrev)
 			}
-			if p.CurrentPage != p.totalPages && p.HasNext == false {
+			if p.CurrentPage != p.TotalPages && p.HasNext == false {
 				t.Errorf("current page is %d, but HasNext returned %v", p.CurrentPage, p.HasPrev)
 			}
 			if p.Prev != (p.CurrentPage-1) && p.CurrentPage != 1 {
@@ -43,11 +43,11 @@ func TestGoPager(t *testing.T) {
 			if p.PagerStart < 1 {
 				t.Errorf("start of pager is %d, should not be less than 1", p.PagerStart)
 			}
-			if p.Next != (p.CurrentPage+1) && p.CurrentPage != p.totalPages {
+			if p.Next != (p.CurrentPage+1) && p.CurrentPage != p.TotalPages {
 				t.Errorf("Next page got %d, want %d", p.Next, (p.CurrentPage + 1))
 			}
-			if p.Next > p.totalPages {
-				t.Errorf("Next page should not be greater than %d", p.totalPages)
+			if p.Next > p.TotalPages {
+				t.Errorf("Next page should not be greater than %d", p.TotalPages)
 			}
 		})
 	}
