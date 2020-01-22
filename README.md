@@ -67,15 +67,15 @@ sample template usage using bulma pagination
     <li>
       <a class="pagination-link" href="?page={{.paginator.FirstPage}}">{{.paginator.FirstPage}}</a>
     </li>
+    <li>
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
     {{end}}
     {{$currentPage := .paginator.CurrentPage}}
     {{range $i := .paginator.Pages}}
     {{if eq $i $currentPage}}
     <li>
       <a class="pagination-link is-current">{{$i}}</a>
-    </li>
-    <li>
-      <span class="pagination-ellipsis">&hellip;</span>
     </li>
     {{else}}
     <li>
